@@ -12,11 +12,11 @@ class StateChange:
         observations_file = os.path.join("/", "state", "observations", "values.txt")
         with open(observations_file, encoding="utf-8") as observations:
             lines = observations.readlines()
-            colunm_index = lines[0].split("\t").index("OperationMode")
-            latest_value = lines[-1].split("\t")[colunm_index]
-            for i in range(len(lines) - 1, -1, -1):
-                parts = lines[i].split("\t")
-                previous_value = parts[colunm_index]
+            column_index = lines[0].split("\t").index("OperationMode")
+            latest_value = lines[-1].split("\t")[column_index]
+            for line in reversed(lines):
+                parts = line.split("\t")
+                previous_value = parts[column_index]
                 if previous_value != latest_value:
                     return datetime.datetime.strptime(parts[0][:19], "%Y-%m-%dT%H:%M:%S")
         raise Exception(f"Unable to find a change from {latest_value}")
